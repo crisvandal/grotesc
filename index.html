@@ -4,99 +4,169 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grotesc Villa</title>
-<meta name="description" content="Grotesc Villa — всё из канала в одном месте.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&display=swap" rel="stylesheet">
+<meta name="description" content="Grotesc Villa — инструментальный хип-хоп альбом, пролежавший в плену 20 лет.">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="Grotesc Villa">
+<link rel="preload" as="image" href="img/logo.webp" type="image/webp">
 <style>
-:root{--bg:#d9ddd8;--ink:#1b1f2a;--mute:#5b6270;--accent:#2f49c9;--line:#b9beb8}
-@media (prefers-color-scheme:dark){:root{--bg:#161a26;--ink:#e3e6df;--mute:#9aa1b0;--accent:#8ea2ff;--line:#2b3144}}
+:root{--bg:#000;--ink:#d9d9de;--mute:#8b8b94;--line:#26262c}
 *{box-sizing:border-box}
-html{background:var(--bg);color:var(--ink)}
-body{margin:0;font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:680px;margin:0 auto;padding:8vh 20px 12vh}
-h1{font:800 clamp(3rem,13vw,6.5rem)/.9 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.04em;margin:0 0 .3em}
-.lead{color:var(--mute);margin:0 0 2.5rem;max-width:34em}
-h2{font:800 1.4rem/1.2 "Bricolage Grotesque",system-ui,sans-serif;margin:3rem 0 .8rem}
-a{color:var(--accent);text-underline-offset:3px}
-a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+html{background:var(--bg);color:var(--ink);color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--ink);text-underline-offset:4px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+.lang{position:absolute;top:16px;right:16px;display:flex;gap:8px;z-index:2}
+.lang button{all:unset;cursor:pointer;display:block;width:36px;height:24px;border:1px solid var(--line);opacity:.45;transition:opacity .2s,border-color .2s}
+.lang button[aria-pressed=true]{opacity:1;border-color:var(--ink)}
+.lang button:hover{opacity:1}
+.lang svg{display:block;width:100%;height:100%}
+.hero{display:grid;place-items:center;min-height:78vh;padding:64px 20px 24px;position:relative;
+  background:radial-gradient(ellipse 60% 45% at 50% 48%,#1a1a20 0,#000 70%)}
+.hero img{width:min(92vw,760px);height:auto;mix-blend-mode:screen;animation:rise 1.6s ease-out both}
+@keyframes rise{from{opacity:0;filter:blur(8px)}to{opacity:1;filter:none}}
+@media (prefers-reduced-motion:reduce){.hero img{animation:none}}
+.story{font:1.2rem/1.75 Georgia,"Times New Roman",serif;padding:56px 0 24px}
+.story p{margin:0 0 1.1em}
+h2{font:600 1.05rem/1.2 system-ui,sans-serif;letter-spacing:.02em;margin:0 0 1rem;color:var(--mute)}
+section{padding:36px 0}
+.covers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.covers img{width:100%;height:auto;display:block;background:#111}
+@media (max-width:560px){.covers{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 -20px;padding:0 20px}
+ .covers img{width:78%;flex:none;scroll-snap-align:center}}
 #links{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 #links li{border-bottom:1px solid var(--line)}
-#links a{display:block;padding:.7rem 0;font-weight:500;text-decoration:none}
+#links a{display:block;padding:.8rem 0;text-decoration:none}
 #links a:hover{text-decoration:underline}
-.post{padding:1.4rem 0;border-bottom:1px solid var(--line)}
+.note{color:var(--mute);font-size:.88rem;margin:-.4rem 0 .6rem}
+.post{padding:1.3rem 0;border-bottom:1px solid var(--line)}
 .post time{display:block;color:var(--mute);font-size:.85rem;margin-bottom:.4rem}
 .post p{margin:0;white-space:pre-line;overflow-wrap:anywhere}
-.post img{display:block;max-width:100%;height:auto;margin-top:.8rem;border-radius:4px}
+.post img{display:block;max-width:100%;height:auto;margin-top:.8rem}
 .post .src{display:inline-block;margin-top:.6rem;font-size:.9rem}
 .empty{color:var(--mute)}
+footer{padding:40px 0 64px;color:var(--mute);font-size:.85rem}
 </style>
 </head>
 <body>
-<main>
-  <h1>Grotesc Villa</h1>
-  <p class="lead">Всё, что выходит в телеграм-канале, собрано здесь.</p>
+<div class="lang" role="group" aria-label="Language">
+  <button type="button" data-lang="ru" aria-label="Русский" title="Русский">
+    <svg viewBox="0 0 9 6"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039a6"/><rect y="4" width="9" height="2" fill="#d52b1e"/></svg>
+  </button>
+  <button type="button" data-lang="en" aria-label="English" title="English">
+    <svg viewBox="0 0 60 30" preserveAspectRatio="none"><rect width="60" height="30" fill="#012169"/><path d="M0 0l60 30M60 0L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30M60 0L0 30" stroke="#c8102e" stroke-width="2.5"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6"/></svg>
+  </button>
+</div>
 
-  <h2>Ссылки</h2>
-  <ul id="links"></ul>
+<header class="hero">
+  <img src="img/logo.webp" width="1000" height="688" alt="Grotesc Villa" fetchpriority="high">
+</header>
 
-  <h2>Из канала</h2>
-  <div id="feed"><p class="empty">Загружаю посты…</p></div>
+<main class="wrap">
+  <div class="story" data-i18n-html="story"></div>
+
+  <section aria-labelledby="h-covers">
+    <h2 id="h-covers" data-i18n="covers"></h2>
+    <div class="covers">
+      <img src="img/cover-1.webp" width="900" height="900" loading="lazy" decoding="async" alt="Grotesc Villa — cover 1">
+      <img src="img/cover-2.webp" width="900" height="900" loading="lazy" decoding="async" alt="Grotesc Villa — cover 2">
+      <img src="img/cover-3.webp" width="900" height="900" loading="lazy" decoding="async" alt="Grotesc Villa — cover 3">
+    </div>
+  </section>
+
+  <section aria-labelledby="h-links">
+    <h2 id="h-links" data-i18n="links"></h2>
+    <ul id="links"></ul>
+  </section>
+
+  <section aria-labelledby="h-feed">
+    <h2 id="h-feed" data-i18n="feed"></h2>
+    <p class="note" data-i18n="feedNote"></p>
+    <div id="feed"></div>
+  </section>
 </main>
 
+<footer class="wrap">© 2026 Grotesc Villa</footer>
+
 <script>
-// Добавляй новые ссылки сюда:
+// ——— Тексты на двух языках ———
+const T = {
+  ru: {
+    story: "<p>В одной большой и красивой стране, где правят произвол, коррупция и грубая сила, в начале нулевых на уютной звукозаписывающей студии прошёл обыск. Её владелец, музыкант, оказался в списке неугодных вольнодумцев и ушёл в бега. В 2024 году ему удалось покинуть страну, хотя он находился в федеральном розыске. Но музыку, изъятую при обыске, он так и не смог вернуть.</p><p>В 2026-м неизвестные каким-то образом вернули жёсткие диски владельцу.</p><p>Инструментальный хип-хоп альбом, пролежавший в плену 20 лет, вернулся, получил финальные штрихи и наконец выходит к слушателям.</p>",
+    covers: "Обложки", links: "Ссылки", feed: "Из канала",
+    feedNote: "", loading: "Загружаю посты…",
+    empty: "Постов пока нет — они появятся после первого обновления.",
+    error: "Не получилось загрузить посты. Открой канал:", open: "Открыть в Telegram", locale: "ru-RU"
+  },
+  en: {
+    story: "<p>In a big, beautiful country ruled by arbitrariness, corruption and brute force, a cozy recording studio was raided in the early 2000s. Its owner, a musician, found himself on a list of undesirable freethinkers and went on the run. In 2024 he managed to leave the country, even though he was on the federal wanted list. But the music seized in the raid never came back to him.</p><p>In 2026, unknown people somehow returned the hard drives to their owner.</p><p>An instrumental hip-hop album that spent 20 years in captivity is back, has received its final touches, and is finally reaching listeners.</p>",
+    covers: "Covers", links: "Links", feed: "From the channel",
+    feedNote: "Posts are shown in the original language (Russian).", loading: "Loading posts…",
+    empty: "No posts yet — they will appear after the first update.",
+    error: "Couldn't load the posts. Open the channel:", open: "Open in Telegram", locale: "en-GB"
+  }
+};
+
+// Добавляй новые ссылки сюда (ru / en — подписи на двух языках):
 const LINKS = [
-  { title: "Telegram-канал", url: "https://t.me/grotescvilla" }
+  { ru: "Telegram-канал", en: "Telegram channel", url: "https://t.me/grotescvilla" }
 ];
 
-const ul = document.getElementById("links");
-for (const l of LINKS) {
-  const li = document.createElement("li");
-  const a = document.createElement("a");
-  a.href = l.url; a.textContent = l.title; a.rel = "noopener";
-  li.appendChild(a); ul.appendChild(li);
-}
+let lang = "ru", posts = null;
+try { const s = localStorage.getItem("lang"); if (s === "ru" || s === "en") lang = s; else if (!/^ru/i.test(navigator.language)) lang = "en"; } catch (e) {}
 
-// Превращает ссылки в тексте поста в кликабельные, остальное — обычный текст
 function linkify(text, parent) {
-  const re = /https?:\/\/[^\s<]+/g;
-  let last = 0, m;
+  const re = /https?:\/\/[^\s<]+/g; let last = 0, m;
   while ((m = re.exec(text))) {
     parent.append(text.slice(last, m.index));
-    const a = document.createElement("a");
-    a.href = m[0]; a.textContent = m[0]; a.rel = "noopener";
-    parent.append(a);
+    const a = document.createElement("a"); a.href = m[0]; a.textContent = m[0]; a.rel = "noopener"; parent.append(a);
     last = m.index + m[0].length;
   }
   parent.append(text.slice(last));
 }
 
-const feed = document.getElementById("feed");
-fetch("posts.json", { cache: "no-cache" })
-  .then(r => r.json())
-  .then(posts => {
-    feed.textContent = "";
-    if (!posts.length) {
-      feed.innerHTML = '<p class="empty">Постов пока нет — они появятся после первого обновления.</p>';
-      return;
-    }
-    for (const p of posts) {
-      const el = document.createElement("article");
-      el.className = "post";
-      const t = document.createElement("time");
-      t.dateTime = p.date;
-      t.textContent = new Date(p.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
-      el.appendChild(t);
-      if (p.text) { const d = document.createElement("p"); linkify(p.text, d); el.appendChild(d); }
-      if (p.photo) { const i = document.createElement("img"); i.src = p.photo; i.alt = ""; i.loading = "lazy"; el.appendChild(i); }
-      const a = document.createElement("a");
-      a.className = "src"; a.href = "https://t.me/" + p.id; a.textContent = "Открыть в Telegram"; a.rel = "noopener";
-      el.appendChild(a);
-      feed.appendChild(el);
-    }
-  })
-  .catch(() => { feed.innerHTML = '<p class="empty">Не получилось загрузить посты. Открой канал: <a href="https://t.me/grotescvilla">t.me/grotescvilla</a>.</p>'; });
+function renderLinks() {
+  const ul = document.getElementById("links"); ul.textContent = "";
+  for (const l of LINKS) {
+    const li = document.createElement("li"), a = document.createElement("a");
+    a.href = l.url; a.rel = "noopener"; a.textContent = l[lang]; li.appendChild(a); ul.appendChild(li);
+  }
+}
+
+function renderFeed() {
+  const t = T[lang], feed = document.getElementById("feed");
+  feed.textContent = "";
+  const note = (html) => { feed.innerHTML = '<p class="empty">' + html + "</p>"; };
+  if (posts === null) return note(t.loading);
+  if (posts === false) return note(t.error + ' <a href="https://t.me/grotescvilla">t.me/grotescvilla</a>');
+  if (!posts.length) return note(t.empty);
+  for (const p of posts) {
+    const el = document.createElement("article"); el.className = "post";
+    const tm = document.createElement("time"); tm.dateTime = p.date;
+    tm.textContent = new Date(p.date).toLocaleDateString(t.locale, { day: "numeric", month: "long", year: "numeric" });
+    el.appendChild(tm);
+    if (p.text) { const d = document.createElement("p"); linkify(p.text, d); el.appendChild(d); }
+    if (p.photo) { const i = document.createElement("img"); i.src = p.photo; i.alt = ""; i.loading = "lazy"; el.appendChild(i); }
+    const a = document.createElement("a"); a.className = "src"; a.href = "https://t.me/" + p.id; a.rel = "noopener"; a.textContent = t.open;
+    el.appendChild(a); feed.appendChild(el);
+  }
+}
+
+function setLang(l) {
+  lang = l; const t = T[l];
+  document.documentElement.lang = l;
+  document.querySelectorAll("[data-i18n]").forEach(n => n.textContent = t[n.dataset.i18n]);
+  document.querySelectorAll("[data-i18n-html]").forEach(n => n.innerHTML = t[n.dataset.i18nHtml]);
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  document.querySelector(".note").hidden = !t.feedNote;
+  try { localStorage.setItem("lang", l); } catch (e) {}
+  renderLinks(); renderFeed();
+}
+
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+setLang(lang);
+
+fetch("posts.json", { cache: "no-cache" }).then(r => r.json()).then(d => { posts = d; renderFeed(); }).catch(() => { posts = false; renderFeed(); });
 </script>
 </body>
 </html>
