@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grotesc Villa</title>
+<meta name="description" content="Grotesc Villa — всё из канала в одном месте.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#d9ddd8;--ink:#1b1f2a;--mute:#5b6270;--accent:#2f49c9;--line:#b9beb8}
+@media (prefers-color-scheme:dark){:root{--bg:#161a26;--ink:#e3e6df;--mute:#9aa1b0;--accent:#8ea2ff;--line:#2b3144}}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink)}
+body{margin:0;font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:8vh 20px 12vh}
+h1{font:800 clamp(3rem,13vw,6.5rem)/.9 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.04em;margin:0 0 .3em}
+.lead{color:var(--mute);margin:0 0 2.5rem;max-width:34em}
+h2{font:800 1.4rem/1.2 "Bricolage Grotesque",system-ui,sans-serif;margin:3rem 0 .8rem}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#links{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+#links li{border-bottom:1px solid var(--line)}
+#links a{display:block;padding:.7rem 0;font-weight:500;text-decoration:none}
+#links a:hover{text-decoration:underline}
+.post{padding:1.4rem 0;border-bottom:1px solid var(--line)}
+.post time{display:block;color:var(--mute);font-size:.85rem;margin-bottom:.4rem}
+.post p{margin:0;white-space:pre-line;overflow-wrap:anywhere}
+.post img{display:block;max-width:100%;height:auto;margin-top:.8rem;border-radius:4px}
+.post .src{display:inline-block;margin-top:.6rem;font-size:.9rem}
+.empty{color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Grotesc Villa</h1>
+  <p class="lead">Всё, что выходит в телеграм-канале, собрано здесь.</p>
+
+  <h2>Ссылки</h2>
+  <ul id="links"></ul>
+
+  <h2>Из канала</h2>
+  <div id="feed"><p class="empty">Загружаю посты…</p></div>
+</main>
+
+<script>
+// Добавляй новые ссылки сюда:
+const LINKS = [
+  { title: "Telegram-канал", url: "https://t.me/grotescvilla" }
+];
+
+const ul = document.getElementById("links");
+for (const l of LINKS) {
+  const li = document.createElement("li");
+  const a = document.createElement("a");
+  a.href = l.url; a.textContent = l.title; a.rel = "noopener";
+  li.appendChild(a); ul.appendChild(li);
+}
+
+// Превращает ссылки в тексте поста в кликабельные, остальное — обычный текст
+function linkify(text, parent) {
+  const re = /https?:\/\/[^\s<]+/g;
+  let last = 0, m;
+  while ((m = re.exec(text))) {
+    parent.append(text.slice(last, m.index));
+    const a = document.createElement("a");
+    a.href = m[0]; a.textContent = m[0]; a.rel = "noopener";
+    parent.append(a);
+    last = m.index + m[0].length;
+  }
+  parent.append(text.slice(last));
+}
+
+const feed = document.getElementById("feed");
+fetch("posts.json", { cache: "no-cache" })
+  .then(r => r.json())
+  .then(posts => {
+    feed.textContent = "";
+    if (!posts.length) {
+      feed.innerHTML = '<p class="empty">Постов пока нет — они появятся после первого обновления.</p>';
+      return;
+    }
+    for (const p of posts) {
+      const el = document.createElement("article");
+      el.className = "post";
+      const t = document.createElement("time");
+      t.dateTime = p.date;
+      t.textContent = new Date(p.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+      el.appendChild(t);
+      if (p.text) { const d = document.createElement("p"); linkify(p.text, d); el.appendChild(d); }
+      if (p.photo) { const i = document.createElement("img"); i.src = p.photo; i.alt = ""; i.loading = "lazy"; el.appendChild(i); }
+      const a = document.createElement("a");
+      a.className = "src"; a.href = "https://t.me/" + p.id; a.textContent = "Открыть в Telegram"; a.rel = "noopener";
+      el.appendChild(a);
+      feed.appendChild(el);
+    }
+  })
+  .catch(() => { feed.innerHTML = '<p class="empty">Не получилось загрузить посты. Открой канал: <a href="https://t.me/grotescvilla">t.me/grotescvilla</a>.</p>'; });
+</script>
+</body>
+</html>
